@@ -12,7 +12,7 @@ mongoose.connect(process.env.MONGODB_URL).then(()=>{
 const app=express();
 
 app.get("/hello-world",(req,res)=>{
-    res.send("Hello Pradhan");
+    res.send("Hello Pradhan") ;
 })
 
 app.listen(process.env.PORT || 3000,()=>{
