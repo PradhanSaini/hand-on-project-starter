@@ -1,3 +1,4 @@
+/* eslint-disable prettier/prettier */
 const express = require("express");
 const mongoose = require("mongoose");
 const cors = require("cors");
@@ -5,7 +6,9 @@ const dotenv = require("dotenv");
 const axios = require("axios");
 var fs = require("fs");
 var FormData = require("form-data");
+const { sign } = require("jsonwebtoken");
 dotenv.config();
+const auth = require("./middlewares/auth")
 
 // eslint-disable-next-line no-unused-vars
 // var FormData = require("form-data");
@@ -33,8 +36,24 @@ const UserSchema = new mongoose.Schema({
   },
 });
 
+const APISchema = new mongoose.Schema({
+  email: {
+    type: String,
+  },
+  name: {
+    type: String,
+  },
+  url: {
+    type: String,
+  },
+  desc: {
+    type: String,
+  },
+});
+
 // eslint-disable-next-line no-unused-vars
 const UserDetails = mongoose.model("UserDetails", UserSchema);
+const APIDetails = mongoose.model("APIDetails", APISchema);
 
 // const silence = new UserDetails({ email: "🤩", password: "Ptanhi@123" });
 
@@ -43,14 +62,13 @@ async function Saveuserdata(userdata) {
   const result = await newuser.save();
   return result;
 }
-// async function getdata() {
-//   const response = await axios({
-//     url: "https://dog.ceo/api/breeds/image/random",
-//   });
-//   return response;
-// }
 
-// eslint-disable-next-line no-unused-vars
+async function SaveAPIdata(APIdata) {
+  const newuser = new APIDetails(APIdata);
+  const result = await newuser.save();
+  return result;
+}
+
 app.post("/signupPage", (req, res) => {
   const Newuser = req.body;
   if (!Newuser.email) res.send({ message: "Please enter Email" });
@@ -78,9 +96,15 @@ app.post("/loginPage", (req, res) => {
   else {
     UserDetails.findOne({ email: Newuser.email }, (err, user) => {
       if (user) {
-        if (Newuser.password == user.password)
-          res.send({ message: "Ur are logged in" });
-        else res.send({ message: "Please Enter correct password" });
+        if (Newuser.password == user.password) {
+          const accessToken = sign(
+            {
+              email: Newuser.email,
+            },
+            "Ram",
+          );
+          res.send(accessToken);
+        } else res.send({ message: "Please Enter correct password" });
       } else {
         res.send({ message: `User does not exist` });
       }
@@ -96,33 +120,6 @@ app.post("/bg-remover", async (req, res) => {
   const formData = new FormData();
   formData.append("size", "auto");
   formData.append("image_file_b64", imageData);
-  
-  // axios({
-  //   method: "post",
-  //   url: "https://api.remove.bg/v1.0/removebg",
-  //   data: formData,
-  //   responseType: "json",
-  //   headers: {
-  //     "X-Api-Key": "aFj9DYxWVTKpucxuwM21hs64",
-  //     Accept: "application/json",
-  //   },
-  // })
-  //   .then((response) => {
-  //     return res.status(200).json({
-  //       image: response.data.data.result_b64, // This variable returns base64 image result from remove.bg api
-  //     });
-  //   })
-  //   .catch((error) => {
-  //     return console.error("Request failed:", error);
-  //   });
-
-  // const formData = new FormData();
-  // formData.append("size", "auto");
-  // formData.append(
-  //   "image_url",
-  //   "https://www.whatsappimages.in/wp-content/uploads/2020/12/Cute-Girl-Images-For-Whatsapp-Dp-Free-Download-9.jpg",
-  // );
-
   axios({
     method: "post",
     url: "https://api.remove.bg/v1.0/removebg",
@@ -147,6 +144,27 @@ app.post("/bg-remover", async (req, res) => {
     .catch((error) => {
       return console.error("Request failed:", error);
     });
+});
+
+app.post("/auth", auth, async (req, res) => {
+  res.send(req.user);
+});
+
+app.post("/new-api", auth, async (req, res) => {
+  const NewAPI = req.body;
+  NewAPI.email = req.user.email;
+  SaveAPIdata(NewAPI);
+  res.send("");
+  // }
+});
+
+app.get("/allapi", async ( req, res)=>{
+
+  APIDetails.find((err, user) => {
+    console.log(user);
+    res.send(user);
+  })
+
 });
 
 app.listen(process.env.PORT || 3000, () => {
