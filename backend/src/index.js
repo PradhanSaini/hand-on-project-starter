@@ -4,7 +4,7 @@ const mongoose = require("mongoose");
 const cors = require("cors");
 const dotenv = require("dotenv");
 const axios = require("axios");
-var fs = require("fs");
+// var fs = require("fs");
 var FormData = require("form-data");
 const { sign } = require("jsonwebtoken");
 dotenv.config();
@@ -160,11 +160,17 @@ app.post("/new-api", auth, async (req, res) => {
 
 app.get("/allapi", async ( req, res)=>{
 
-  APIDetails.find((err, user) => {
-    console.log(user);
-    res.send(user);
+  APIDetails.find((err, apis) => {
+    // console.log(apis);
+    res.send(apis);
   })
+});
 
+app.post("/my-all-api",auth,async (req, res)=>{
+  APIDetails.find({ email: req.user.email },  (err, apis)=>{
+    // console.log("********");
+     res.send(apis);
+  });
 });
 
 app.listen(process.env.PORT || 3000, () => {
