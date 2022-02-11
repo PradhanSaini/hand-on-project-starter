@@ -11,7 +11,7 @@ import style from './MyAPIs.module.scss'
 import {  useEffect } from 'react'
 function MyAPIs() {
   
-     const [myapi,setmyapi]= useState([{name:"pops"}]);
+     const [myapi,setmyapi]= useState([]);
 
      useEffect(async ()=>{
        var head=await sessionStorage.getItem("accessToken")
@@ -32,7 +32,7 @@ function MyAPIs() {
       </div>
       <div className={style.parent}>
           {myapi.length>0 ? myapi.map((item,index) =>(
-          <MyCard key ={index} name={item.name} image={item.url} description={item.desc} className={style.child} />
+          <MyCard key ={index} email={item.email} name={item.name} image={item.url} description={item.desc}  id={item._id} className={style.child} />
         )): <div className={style.mid}>Your uploaded APIs will Appear here ... 😒😒😒😒😒😁😁😁😁</div>}
         
       </div>

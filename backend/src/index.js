@@ -9,6 +9,7 @@ var FormData = require("form-data");
 const { sign } = require("jsonwebtoken");
 dotenv.config();
 const auth = require("./middlewares/auth")
+var ObjectId = require('mongodb').ObjectId;
 
 // eslint-disable-next-line no-unused-vars
 // var FormData = require("form-data");
@@ -168,10 +169,37 @@ app.get("/allapi", async ( req, res)=>{
 
 app.post("/my-all-api",auth,async (req, res)=>{
   APIDetails.find({ email: req.user.email },  (err, apis)=>{
-    // console.log("********");
+    // console.log("********",apis);
      res.send(apis);
   });
 });
+
+app.put("/update-card",async (req,res)=>{
+  
+  // var id = new ObjectId(req.body.id);
+  var id=req.body.id;
+  var obj=req.body.obj;
+  console.log(id);
+ try{
+  APIDetails.findById(id,(err,result)=>{
+    if(err)res.send({message:err});
+    else
+    if(obj.email)
+    result.email=obj.email;
+    if(obj.name)
+    result.name=obj.name;
+    if(obj.url)
+    result.url=obj.url;
+    if(obj.desc)
+    result.desc=obj.desc;
+    SaveAPIdata(result);
+})
+ }
+ catch(err){
+  res.send({message:err});
+ }
+  
+})
 
 app.listen(process.env.PORT || 3000, () => {
   console.log(`PORT ${process.env.PORT} is running ......`);

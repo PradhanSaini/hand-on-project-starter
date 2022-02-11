@@ -11,9 +11,7 @@ import style from './DashBoard.module.scss'
 import {  useEffect } from 'react'
 function DashBoard() {
   
-     const [allapi,setallapi]= useState([{
-       name:"pops"
-     }]);
+     const [allapi,setallapi]= useState([]);
 
      useEffect(()=>{
        axios.get('http://localhost:3001/allapi')

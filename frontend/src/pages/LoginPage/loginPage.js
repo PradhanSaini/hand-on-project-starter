@@ -6,12 +6,12 @@ import {Link} from 'react-router-dom';
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import { AuthContext } from "../../helper/authContext"
-
+import Navbar from "../../components/Navbar/Navbar"
 
 function LoginPage() {
 
   const {setAuthState} = useContext(AuthContext);
-
+ 
 
   let history = useNavigate();
   const [email, setEmail] = useState({});
@@ -46,6 +46,7 @@ function LoginPage() {
 
   return (
     <body>
+      <Navbar />
     <div className={style.main_block}>
       <h1>Login</h1>
       <form onSubmit={handleSubmit}>
