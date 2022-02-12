@@ -70,6 +70,7 @@
     }
 
     .body_post {
+
       width: 100%;
       height: 50%;
       background: rgb(206, 206, 206);
@@ -87,10 +88,11 @@
 
 
       .post_content {
-        width: 80%;
-        height: 80%;
+        width: 100%;
+        height: 82%;
         background: #dad6d6;
         position: relative;
+        margin-bottom: 125px;
 
         h1 {
           font-size: 20px;
@@ -309,4 +311,21 @@ input {
 		color: blue;
 		border: 2px solid blue;
 	}
+}
+
+.ourbutton{
+  max-width:100px;
+  // margin-top:322px;
+  margin-right:5px;
+  // z-index: 1;
+  cursor:pointer;
+}
+
+.ourbuttons{
+  max-width:210px;
+  margin:5px;
+  cursor:pointer;
+}
+.manageButtons{
+margin-top: 70px;
 }
