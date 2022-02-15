@@ -4,6 +4,7 @@ import style from './MyCard.module.scss'
 import axios from "axios";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import swal from 'sweetalert2'
 // eslint-disable-next-line no-unused-vars
 const MyCard = (card) => {
 
@@ -49,6 +50,12 @@ const MyCard = (card) => {
                 else {
                     handleCross();
                     history("/");
+                    swal.fire({
+                        title:"Successfully Edited !",
+                        icon: "success",
+                        showConfirmButton:false,
+                        timer:1300,
+                    })
                     history("/my-apis");
                 }
             })
@@ -67,8 +74,14 @@ const MyCard = (card) => {
             .then(res => {
                 if (res.data.message) alert(res.data.message);
                 else {
-                    
+                    swal.fire({
+                        title:"Published ",
+                        icon: "success",
+                        showConfirmButton:false,
+                        timer:1300,
+                    })
                     history("/");
+
                     // window.location.reload(false);
                 }
             })
@@ -89,6 +102,12 @@ const MyCard = (card) => {
                 if (res.data.message) alert(res.data.message);
                 else {
                     history("/");
+                    swal.fire({
+                        title:"Removed",
+                        icon: "success",
+                        showConfirmButton:false,
+                        timer:1300,
+                    })
                     // window.location.reload(false);
                 }
             })
@@ -124,7 +143,7 @@ const MyCard = (card) => {
                     <div className={style.body_post}>
                         <div className={style.post_content}>
                             <h1>{card.name}</h1>
-                            <p>{card.description}</p>
+                            <p className={style.scroll}>{card.description}</p>
                            <div className={style.manageButtons}> 
                             <button className={style.ourbutton}
                                 type="button"

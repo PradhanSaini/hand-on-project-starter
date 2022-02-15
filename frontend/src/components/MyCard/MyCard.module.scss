@@ -327,5 +327,11 @@ input {
   cursor:pointer;
 }
 .manageButtons{
-margin-top: 70px;
+margin-top: -3px;
+}
+
+.scroll{
+  overflow-y:scroll;
+  height: 100px;
+  border: 2px red;
 }
