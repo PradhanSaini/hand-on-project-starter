@@ -311,9 +311,14 @@ input {
 .ourbutton{
   max-width:100px;
   // margin-top:322px;
+  background-color: #666;
   margin-right:5px;
   // z-index: 1;
   cursor:pointer;
+}
+.ourbutton:hover{
+  color:white;
+  background-color: #020202;
 }
 
 .ourbuttons{

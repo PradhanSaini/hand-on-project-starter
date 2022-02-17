@@ -10,7 +10,7 @@ import swal from "sweetalert";
 
 function SignupPage() {
 
-  const [usercode, setUsercode] = useState(123);
+  const [usercode, setUsercode] = useState();
   const [code, setCode] = useState();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");

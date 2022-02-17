@@ -302,6 +302,67 @@ app.put("/update-password", auth, async (req, res) => {
   }
 });
 
+
+app.post('/forgot-password',async (req,res)=>{
+    var email=req.body.email;
+  
+    // eslint-disable-next-line no-unused-vars
+    UserDetails.findOne({ email: email }, (err, user) => {
+      console.log("sandy",email);
+      if (user) {
+        try {
+          
+          var currOtp = 1000 + Math.floor(Math.random() * 9000);
+          var mailOptions = {
+            from: 'marketplaceapiowner@gmail.com',
+            to: email,
+            subject: 'API Marketplace | One Time Password ',
+            text: `Use the following verification OTP: ${currOtp}`,
+            authentication: 'plain'
+          };
+          transporter.sendMail(mailOptions, async function (error, info) {
+            if (error) {
+              console.log(info);
+              res.send({ message: "error aa rhi hai" });
+            }
+            else {
+              currOtp = encryptmyotp(currOtp);
+              res.send({ message: "OTP", otp: currOtp });
+            }
+          })
+          // Saveuserdata(Newuser);
+          // res.send({ message: "Succefully Registered 😎" });
+        } catch (err) {
+          res.send({ message: `Error : ${err}` });
+        }
+      }
+      else {
+        res.send({ message: "User is not registered" });
+      }
+    });
+
+})
+
+
+app.post("/login-otp", async (req, res) => {
+  const Rbody = req.body;
+  var code = decryptmyotp(Rbody.code);
+  var usercode = Rbody.usercode;
+  // // console.log("code = ", code, usercode);
+  if (code == usercode) {
+    const accessToken = sign(
+      {
+        email: Rbody.email,
+      },
+      "Ram",
+    );
+    res.send({ Isverify: true, accessToken:accessToken });
+  }
+  else {
+    res.send({ Isverify: false });
+  }
+});
+
 app.listen(process.env.PORT || 3000, () => {
   console.log(`PORT ${process.env.PORT} is running ......`);
 });

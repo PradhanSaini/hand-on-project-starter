@@ -1,5 +1,5 @@
 import React from "react";
-import logo from "./logo.svg"
+import logo from "./logo.png"
 import { Link } from 'react-router-dom';
 import { AuthContext } from "../../helper/authContext";
 import { useContext } from "react";
@@ -31,7 +31,7 @@ function Navbar() {
         <ul className="navbar-nav">
           <li className="">
             <Link to="/">
-              <img alt="" src={logo} />
+              <img alt="" src={logo} className={style.logo}/>
             </Link>
           </li>
         </ul>
