@@ -63,7 +63,7 @@ const APISchema = new mongoose.Schema({
   desc: {
     type: String,
   },
-  IsPublish : {
+  IsPublish: {
     type: Boolean,
     default: false,
   }
@@ -87,18 +87,18 @@ async function SaveAPIdata(APIdata) {
   return result;
 }
 
-function decryptmyotp(currOtp){
+function decryptmyotp(currOtp) {
   var num = currOtp + 54980;
-  num = num/8;
+  num = num / 8;
   num = num - 100007;
   return num;
 }
 
-function encryptmyotp(currOtp){
-   var num = currOtp + 100007;
-   num = num*8;
-   num = num - 54980;
-   return num;
+function encryptmyotp(currOtp) {
+  var num = currOtp + 100007;
+  num = num * 8;
+  num = num - 54980;
+  return num;
 }
 
 app.post("/signupPage", (req, res) => {
@@ -109,7 +109,7 @@ app.post("/signupPage", (req, res) => {
     UserDetails.findOne({ email: Newuser.email }, (err, user) => {
       if (user) {
         res.send({ message: "User Already Registered" });
-      } 
+      }
       else {
         try {
 
@@ -121,14 +121,14 @@ app.post("/signupPage", (req, res) => {
             text: `Verify your email to finish signing up with API Marketplace. Use the following verification code: ${currOtp}`,
             authentication: 'plain'
           };
-          transporter.sendMail(mailOptions, async function(error,info){
-            if(error){
+          transporter.sendMail(mailOptions, async function (error, info) {
+            if (error) {
               console.log(info);
-              res.send({message : "error aa rhi hai"});
+              res.send({ message: "error aa rhi hai" });
             }
-            else{
+            else {
               currOtp = encryptmyotp(currOtp);
-              res.send({message: "OTP", otp: currOtp});
+              res.send({ message: "OTP", otp: currOtp });
             }
           })
           // Saveuserdata(Newuser);
@@ -146,12 +146,12 @@ app.post("/verify-otp", async (req, res) => {
   var code = decryptmyotp(Rbody.code);
   var usercode = Rbody.usercode;
   // // console.log("code = ", code, usercode);
-  if(code == usercode){
-    await Saveuserdata({email :Rbody.email, password: Rbody.password});
-    res.send({Isverify:  true});
+  if (code == usercode) {
+    await Saveuserdata({ email: Rbody.email, password: Rbody.password });
+    res.send({ Isverify: true });
   }
-  else{
-    res.send({Isverify:  false});
+  else {
+    res.send({ Isverify: false });
   }
 });
 
@@ -224,7 +224,7 @@ app.post("/new-api", auth, async (req, res) => {
   // }
 });
 
-app.get("/allapi", async ( req, res)=>{
+app.get("/allapi", async (req, res) => {
 
   APIDetails.find((err, apis) => {
     // // console.log(apis);
@@ -232,51 +232,75 @@ app.get("/allapi", async ( req, res)=>{
   })
 });
 
-app.post("/my-all-api",auth,async (req, res)=>{
-  APIDetails.find({ email: req.user.email },  (err, apis)=>{
+app.post("/my-all-api", auth, async (req, res) => {
+  APIDetails.find({ email: req.user.email }, (err, apis) => {
     // // console.log("****",apis);
-     res.send(apis);
+    res.send(apis);
   });
 });
 
-app.put("/update-card",async (req,res)=>{
-  
+app.put("/update-card", async (req, res) => {
+
   // var id = new ObjectId(req.body.id);
-  var id=req.body.id;
-  var obj=req.body.obj;
+  var id = req.body.id;
+  var obj = req.body.obj;
   // console.log(id);
- try{
-    APIDetails.findById(id,(err,result)=>{
-    if(err)res.send({message:err});
-    // eslint-disable-next-line no-prototype-builtins
-    if(obj.hasOwnProperty("IsPublish"))
-    result.IsPublish=obj.IsPublish
-    if(obj.email)
-    result.email=obj.email;
-    if(obj.name)
-    result.name=obj.name;
-    if(obj.url)
-    result.url=obj.url;
-    if(obj.desc)
-    result.desc=obj.desc;
-    if(obj.endpoint)
-    result.endpoint=obj.endpoint;
-    SaveAPIdata(result);
-    res.send("")
-})
- }
- catch(err){
-   // console.log("fs",err)
-  res.send({message:err});
- }
-  
+  try {
+    APIDetails.findById(id, (err, result) => {
+      if (err) res.send({ message: err });
+      // eslint-disable-next-line no-prototype-builtins
+      if (obj.hasOwnProperty("IsPublish"))
+        result.IsPublish = obj.IsPublish
+      if (obj.email)
+        result.email = obj.email;
+      if (obj.name)
+        result.name = obj.name;
+      if (obj.url)
+        result.url = obj.url;
+      if (obj.desc)
+        result.desc = obj.desc;
+      if (obj.endpoint)
+        result.endpoint = obj.endpoint;
+      SaveAPIdata(result);
+      res.send("")
+    })
+  }
+  catch (err) {
+    // console.log("fs",err)
+    res.send({ message: err });
+  }
+
 })
 
-app.delete("/delete-card",async(req,res)=>{
+app.delete("/delete-card", async (req, res) => {
   await APIDetails.findByIdAndRemove(req.body.id).exec();
   // // console.log(req.body.id);
   res.send("")
 })
+
+app.put("/update-password", auth, async (req, res) => {
+  var pass = req.body.password;
+  var mail = req.user.email;
+  
+  try {
+    UserDetails.findOne({ email: mail }, (err, user) => {
+      if (err) res.send({ message: err });
+      else {
+        
+        if(pass=="")res.send({message:"Please Enter Password"})
+        else{
+          if(pass!="")user.password=pass;
+          Saveuserdata(user);
+          res.send("")
+        }
+        
+      }
+    });
+  }
+  catch(err){
+    res.send({ message: err });
+  }
+});
 
 app.listen(process.env.PORT || 3000, () => {
   console.log(`PORT ${process.env.PORT} is running ......`);

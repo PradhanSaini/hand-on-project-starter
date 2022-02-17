@@ -56,7 +56,16 @@ function Navbar() {
                     </button>
                   </Link>
                 </td>
-
+                <td className="mr-100">
+                  <Link to="/my-account">
+                    <button
+                      type="button"
+                      className={[style.custom_button, "btn"].join(' ')}
+                    >
+                      My Account
+                    </button>
+                  </Link>
+                </td>
                 <td><button
                   type="button"
                   className={[style.custom_button, "btn"].join(' ')}
