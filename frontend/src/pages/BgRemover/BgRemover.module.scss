@@ -6,12 +6,13 @@
   .box1 {
     float: left;
     position: absolute;
-    width: 717px;
-    height: 100px;
-    left: 50px;
-    top: 88px;
-  
-    background: rgba(247, 248, 250, 0.5);
+    width: 557px;
+    height: 550px;
+    left: 100px;
+    top: 188px;
+    border:solid 2px rgb(207, 255, 225);
+    background-color: aliceblue;
+    border-radius: 15px;
   }
   
   .box2 {
@@ -23,25 +24,26 @@
     top: 210px;
   
     background: #ffffff;
-    border: 1px solid #dfe0e0;
+    border: 2px solid #a8a8a8;
     box-sizing: border-box;
     border-radius: 10px;
+    // border:none
   }
   
   .image12 {
     position: absolute;
     width: 400px;
     height: 315px;
-    left: 90px;
-    top: 300px;
+    left: 80px;
+    top: 200px;
   }
   
   .h2text{
-      position: absolute;
+  position: absolute;
   width: 326px;
   height: 124px;
-  left: 152px;
-  top: 115px;
+  left: 122px;
+  top: 15px;
   
   font-family: DM Sans;
   font-style: normal;
@@ -59,8 +61,9 @@
       position: absolute;
       width: 319px;
   height: 36px;
-  left: 152px;
-  top: 270px;
+  left: 122px;
+  top: 150px;
+  font-size: 45px;
   
   font-family: DM Sans;
   font-style: normal;
@@ -79,4 +82,54 @@
     width: 30 px;
     height: 30px;
     cursor: pointer;
+  }
+
+  .imgdiv{
+    height: 356px;
+    // border:none
+    width: 429px;
+    border-radius:10px;
+    // background-color: red;
+
+  }
+
+  .pradhan{
+    width: 150px;
+    display: inline-block;
+    border-radius: 5px;
+    margin-left: 260px;
+    top:10px;
+    cursor: pointer;
+  }
+
+  .yourbtn {
+    position: relative;
+    top: 52px;
+    font-family: calibri;
+    width: 200px;
+    padding: 10px;
+    // -webkit-border-radius: 5px;
+    // -moz-border-radius: 5px;
+    // border: 1px dashed #BBB;
+    text-align: center;
+    background-color: #1c87c9;
+    cursor: pointer;
+    margin-right:208px;
+    display: inline-block;
+    color:white;
+    font-weight: 700;
+    height: 42px;
+    border-radius: 5px;
+  }
+
+  // .imginput{
+  //   height: 407px;
+  //   // border:none
+  //   width: 429px;
+  //   border-radius:10px;
+  // }
+
+  .imgg{
+    max-width: 429px;
+    max-height: 356px;
   }

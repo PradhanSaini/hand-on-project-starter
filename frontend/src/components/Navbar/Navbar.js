@@ -5,30 +5,31 @@ import { AuthContext } from "../../helper/authContext";
 import { useContext } from "react";
 import { useNavigate } from "react-router-dom";
 import swal from 'sweetalert2';
+import style from "./Navbar.module.scss";
 
 function Navbar() {
 
-
   const { authState, setAuthState } = useContext(AuthContext);
   let history = useNavigate();
+
   function handlelogout() {
     sessionStorage.removeItem("accessToken");
     setAuthState(false);
     swal.fire({
-      icon:'success',
-      title:'Logged out',
-      showConfirmButton:false,
-      timer:1000
-    })
+      icon: 'success',
+      title: 'Logged out',
+      showConfirmButton: false,
+      timer: 1000,
+    });
     history("/")
   }
 
 
   return (
-    <nav className="navbar navbar-expand-em bg-light">
+    <nav className="navbar bg-light">
       <div className="container">
-        <ul className="navbar-nav mr-auto">
-          <li className="nav-item">
+        <ul className="navbar-nav">
+          <li className="">
             <Link to="/">
               <img alt="" src={logo} />
             </Link>
@@ -36,20 +37,20 @@ function Navbar() {
         </ul>
         {authState ? (
           <>
-            <table>
+            <table className={style.marg}>
               <tr><td><Link to="/my-apis">
                 <button
                   type="button"
-                  className="btn btn-primary"
+                  className={[style.custom_button, "btn"].join(' ')}
                 >
                   My APIs
                 </button>
               </Link></td>
-                <td className="ml-30">
+                <td className="mr-100">
                   <Link to="/new-api">
                     <button
                       type="button"
-                      className="btn btn-primary"
+                      className={[style.custom_button, "btn"].join(' ')}
                     >
                       +New API
                     </button>
@@ -58,7 +59,7 @@ function Navbar() {
 
                 <td><button
                   type="button"
-                  className="btn btn-primary"
+                  className={[style.custom_button, "btn"].join(' ')}
                   onClick={handlelogout}
                 >
                   Logout
@@ -70,7 +71,7 @@ function Navbar() {
         ) : (
           <>
             <Link to="/LoginPage">
-              <button type="button" className="btn btn-primary">
+              <button type="button" className={[style.custom_button, "btn"].join(' ')}>
                 Login/Signup
               </button>
             </Link>

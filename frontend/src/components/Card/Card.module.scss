@@ -307,6 +307,8 @@
   cursor: pointer;
   padding: 2vh;
   margin-bottom: 0.2rem;
+  border: 1px solid black;
+  margin-left:5px;
 
   @media screen and (max-width: 1300px) {
     width: 28%;

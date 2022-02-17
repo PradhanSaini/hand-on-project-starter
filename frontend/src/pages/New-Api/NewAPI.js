@@ -16,29 +16,33 @@ function NewAPI() {
     let history = useNavigate();
     const [name, setname] = useState();
     const [url, seturl] = useState();
-    const [desc,setdesc] = useState();
+    const [desc, setdesc] = useState();
+    const [endpoint, setendpoint] = useState();
 
     function handleChange(e) {
         if (e.target.name == "name") setname(e.target.value);
         if (e.target.name == "url") seturl(e.target.value);
         if (e.target.name == "desc") setdesc(e.target.value);
+        if (e.target.name == "endpoint") setendpoint(e.target.value);
     }
 
     const handleSubmit = (e) => {
         e.preventDefault();
-        
+
         const obj = {
             header: sessionStorage.getItem("accessToken"),
             name: name,
-            url: url, 
+            url: url,
             desc: desc,
-            IsPublish:false,
+            endpoint:endpoint,
+            IsPublish: false,
         }
-       console.log(obj);
+        console.log(obj);
         axios.post("http://localhost:3001/new-api", obj,)
             .then(res => {
                 if (res.data.message) alert(res.data.message);
                 else {
+                    history('/')
                     history("/my-apis");
                 }
             })
@@ -48,21 +52,25 @@ function NewAPI() {
     }
 
     return (
-        <body>
-            <Navbar/>
+        <>
+            <Navbar />
             <div className={style.main_block}>
                 <h1>ADD New API</h1>
                 <form onSubmit={handleSubmit}>
-                    <input type="text" name="name" id="name" placeholder="API Name" onChange={handleChange} />
-                    <input type="text" name="url" id="url" placeholder="API Image Url" onChange={handleChange} />
-                    <input type="text" name="desc" id="desc" placeholder="Description" onChange={handleChange} />
+                    <input className={style.forinput} type="text" name="name" id="name" placeholder="API Name" onChange={handleChange} />
+                    <input className={style.forinput} type="text" name="url" id="url" placeholder="API Image Url" onChange={handleChange} />
+                    <input className={style.forinput} type="text" name="endpoint" id="endpoint" placeholder="API Endpoint" onChange={handleChange} />
+                    {/* <input type="text" name="desc" id="desc" placeholder="Description" onChange={handleChange} /> */}
+                    <textarea className={style.fortextarea} type="text" name="desc" id="desc" placeholder="Description" onChange={handleChange} rows="4" cols="50">
+                    
+                    </textarea>
                     <div className={style.btn_block}>
                         <button type="submit">Add API</button>
                     </div>
                 </form>
 
             </div >
-        </body >
+        </>
 
     )
 

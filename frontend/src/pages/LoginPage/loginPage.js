@@ -34,8 +34,8 @@ function LoginPage() {
     axios.post("http://localhost:3001/loginPage",obj)
     .then(res=>{
       if(res.data.message){
-        swal({title: res.data.message,
-              icon: "error",
+        swal.fire({title: res.data.message,
+              icon: "info",
               button: "OK!",
             });
       }
@@ -52,34 +52,47 @@ function LoginPage() {
       }
     })
     .catch(err=>{
-      alert("error in signup: ",err );
+      swal.fire({
+        icon: 'warning',
+        title: err,
+        // showConfirmButton: false,
+        // timer: 1000,
+      });
     });
   }
 
   return (
-    <body>
-      <Navbar />
-    <div className={style.main_block}>
-      <h1>Login</h1>
-      <form onSubmit={handleSubmit}>
-        <input type="email" name="email" id="name" placeholder="Email"  onChange={handleChange}/>
-        <input type="text" name="password" id="name" placeholder="Password"  onChange={handleChange}/>
-        <div className={style.btn_block}>
-         <button className = "btn btn-primary" type="submit">Login</button>
-        </div>
-        <div className={style.or}>
-          Or
-        </div>
-        <div className={style.btn_block}>
-      <Link to="/signupPage">
-              <button type="button" className="btn btn-secondary">Register
-             </button>
-      </Link>
-     </div>
-      </form>
+
+    <>
+    <Navbar />
+    {sessionStorage.getItem("accessToken")!=null?<h1>Already Logged In</h1>:<>
       
-    </div>
-  </body>
+      <div className={style.main_block}>
+        <h1>Login</h1>
+        <form onSubmit={handleSubmit}>
+          <input className={style.forinput} type="email" name="email" id="name" placeholder="Email"  onChange={handleChange}/>
+          <input className={style.forinput} type="text" name="password" id="name" placeholder="Password"  onChange={handleChange}/>
+          <div className={style.btn_block}>
+           <button className = "btn btn-primary" type="submit">Login</button>
+          </div>
+          <div className={style.or}>
+            Or
+          </div>
+          <div className={style.btn_block}>
+        <Link to="/signupPage">
+                <button type="button" className="btn btn-secondary">Register
+               </button>
+        </Link>
+       </div>
+        </form>
+        
+      </div>
+    </>}
+    </>
+
+
+
+    
     
   )
 

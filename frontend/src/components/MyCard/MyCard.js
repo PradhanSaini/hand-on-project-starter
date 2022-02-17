@@ -5,6 +5,7 @@ import axios from "axios";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import swal from 'sweetalert2'
+// import { useEffect } from "react";
 // eslint-disable-next-line no-unused-vars
 const MyCard = (card) => {
 
@@ -12,11 +13,13 @@ const MyCard = (card) => {
     const [name, setname] = useState();
     const [url, seturl] = useState();
     const [desc,setdesc] = useState();
+    const [endpoint,setendpoint] = useState();
 
     function handleChange(e) {
         if (e.target.name == "name") setname(e.target.value);
         if (e.target.name == "url") seturl(e.target.value);
         if (e.target.name == "desc") setdesc(e.target.value);
+        if (e.target.name == "endpoint") setendpoint(e.target.value);
     }
 
     function handleEdit() {
@@ -41,27 +44,32 @@ const MyCard = (card) => {
             name: name,
             url: url, 
             desc: desc,
+            endpoint:endpoint,
             email: card.email,
         }
         console.log(obj)
-        axios.put("http://localhost:3001/update-card", {id:card.id,obj:obj})
+        // useEffect(()=>{
+            axios.put("http://localhost:3001/update-card", {id:card.id,obj:obj})
             .then(res => {
                 if (res.data.message) alert(res.data.message);
                 else {
                     handleCross();
-                    history("/");
                     swal.fire({
                         title:"Successfully Edited !",
                         icon: "success",
                         showConfirmButton:false,
                         timer:1300,
                     })
-                    history("/my-apis");
+                    history('/')
+                    setTimeout(history("/my-apis"), 500);
+                    
                 }
             })
             .catch(err => {
                 alert("error in signup: ", err);
             });
+        // },[])
+        
     }
     async function handlePublish(){
         // e.preventD/efault();
@@ -80,13 +88,14 @@ const MyCard = (card) => {
                         showConfirmButton:false,
                         timer:1300,
                     })
-                    history("/");
+                    history('/')
+                    setTimeout(history("/my-apis"), 500);
 
                     // window.location.reload(false);
                 }
             })
             .catch(err => {
-                alert("error in signup: ", err);
+                swal("error in updation", err);
             });
     }
 
@@ -108,6 +117,8 @@ const MyCard = (card) => {
                         showConfirmButton:false,
                         timer:1300,
                     })
+                    history('/')
+                    setTimeout(history("/my-apis"), 500);
                     // window.location.reload(false);
                 }
             })
@@ -186,23 +197,21 @@ const MyCard = (card) => {
                 </div>
             </div>
             <div className={style.bg_modal} id={card.id}>
-                <div className={style.modal_contents}>
 
                     <div className={style.close} onClick={()=>{
                         handleCross();
                     }}>+</div>
-                    <img src="" alt="" />
-
                     <form action="">
-                        <input type="text" name="name" id="name" placeholder="API Name" defaultValue={card.name}  onChange={handleChange}/>
-                        <input type="text" name="url" id="url" placeholder="API Image Url" defaultValue={card.image} onChange={handleChange}/>
-                        <input type="text" name="desc" id="desc" placeholder="Description" defaultValue={card.description} onChange={handleChange}/>
+                        <input className={style.forinput} type="text" name="name" id="name" placeholder="API Name" defaultValue={card.name}  onChange={handleChange}/>
+                        <input className={style.forinput} type="text" name="url" id="url" placeholder="API Image Url" defaultValue={card.image} onChange={handleChange}/>
+                        <input className={style.forinput} type="text" name="endpoint" id="endpoint" placeholder="API Endpoint" defaultValue={card.endpoint} onChange={handleChange}/>
+                        {/* <input type="text" name="desc" id="desc" placeholder="Description" defaultValue={card.description} onChange={handleChange}/> */}
+                        <textarea className={style.fortextarea} type="text" name="desc" id="desc" defaultValue={card.description} placeholder="Description" onChange={handleChange} rows="4" cols="50">
+                            </textarea>
                         <a href="#" className={style.buttons} onClick={()=>{
                             handleUpdate();
                         }}>Update and Save</a>
                     </form>
-
-                </div>
             </div>
         </>
     );

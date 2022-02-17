@@ -7,9 +7,13 @@ import axios from 'axios';
 import React,{Component} from 'react';
 import { useState } from "react";
 
+var url = "https://cdn.britannica.com/09/157809-050-073D23F3/Indian-bustard-bird-species.jpg"
+
 const BgRemover = () => {
 
-    const [selectedFile, setSelectedFile] = useState(null);
+    const [selectedFile, setSelectedFile] = useState();
+    const [image,setImage]=useState(url);
+    const [ready,setReady]= useState(false);
      
     const toBase64 = file => new Promise((resolve, reject) => {
       const reader = new FileReader();
@@ -18,51 +22,78 @@ const BgRemover = () => {
       reader.onerror = error => reject(error);
   });
 
-    function handleChange(e){
-        // console.log(e.target);
-        setSelectedFile(e.target.files[0])
-        var image = document.getElementById('output');
-        // eslint-disable-next-line no-mixed-spaces-and-tabs
-        image.src = URL.createObjectURL(e.target.files[0]);
+  async function  handleChange(e){
+        setReady(false);
+        setSelectedFile(e.target.files[0]);
+        var i=await toBase64(e.target.files[0]);
+        setImage(i);
+        console.log(image);
 
       }
 
     const handleSubmit = async (event) =>{
       event.preventDefault();
-      const image = await toBase64(selectedFile);
-
-      console.log(image);
-      // const image = await selectedFile;
-      axios.post("http://localhost:3001/bg-remover",{ image : image },{
-        // headers: {
-        //     'Content-Type': 'multipart/form-data',
-        // }
-    })
+      
+      axios.post("http://localhost:3001/bg-remover",{ image : image },{})
     .then(res=>{
-      var imgg = document.getElementById('output');
-      imgg.src="data:image/png;base64,"+res.data;
-      console.log("Responce :",res.data);
+      setReady(true);
+      setImage("data:image/png;base64,"+res.data)
     })
     .catch(err=>{
       alert("error in signup: ",err );
     });
     }
 
+    function getfile(){
+      document.getElementById("upfile").click();
+    }
+
+
+    function hadnleDownload(){
+      var download=document.createElement('a');
+      download.href=image;
+      download.download='your-img.png'
+      download.click();
+    }
+
   return (
     <>
       <Navbar />
+
+
+
+
       <div className={style.box}>
+
+
+
         <div className={style.box1}>
           <h2 className={style.h2text}>Remove image background </h2>
           <h4 className={style.h4text}>100% automatic and free</h4>
           <img className={style.image12} src={photo} alt="" />
         </div>
+
+
+
+
+
+
         <div className={style.box2}>
-          <input type="file" accept="image/*" onChange={handleChange} />
-          <img src="randi" id="output" />
-          <button className="btn btn-primary" onClick={handleSubmit}>
-                  Upload!
-          </button>
+          <div className={style.imgdiv}>
+          <img className={style.imgg} src={image} id="output" />
+          </div>
+
+          <div style={{height:"0px",widht:"0px",overflow:"hidden"}}>
+            <input className ={style.inputdiv} id="upfile" type="file" accept="image/*" onChange={handleChange} />
+            </div>
+          <span className={style.yourbtn} onClick={getfile}>Click to upload Image</span>
+
+
+          {ready? <span><button className ={style.pradhan} onClick={hadnleDownload}>
+                  DownLoad 
+          </button></span>:<span><button className ={style.pradhan} onClick={handleSubmit}>
+                  Remove background
+          </button></span>}
         </div>
       </div>
     </>

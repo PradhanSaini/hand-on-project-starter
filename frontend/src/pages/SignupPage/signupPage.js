@@ -12,8 +12,8 @@ function SignupPage() {
 
   const [usercode, setUsercode] = useState(123);
   const [code, setCode] = useState();
-  const [email, setEmail] = useState(null);
-  const [password, setPassword] = useState(null);
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
 
   let history = useNavigate();
 
@@ -86,12 +86,13 @@ function handleCross() {
 }
    
   return (
-    <body>
+    <>
       <Navbar />
       <div className={style.main_block} id="1">
         <h1>Register</h1>
         <form onSubmit={handleSubmit}>
           <input
+            className={style.forinput}
             type="email"
             name="email"
             id="name"
@@ -99,6 +100,7 @@ function handleCross() {
             onChange={handleChange}
           />
           <input
+            className={style.forinput}
             type="text"
             name="password"
             id="name"
@@ -122,7 +124,6 @@ function handleCross() {
       </div>
 
       <div className={style.bg_modal} id="2">
-        <div className={style.modal_contents}>
           <div
             className={style.close}
             onClick={() => {
@@ -133,6 +134,7 @@ function handleCross() {
           </div>
           <form action="">
             <input
+              className={style.forinputotp}
               type="number"
               name="otp"
               id="otp"
@@ -149,9 +151,8 @@ function handleCross() {
               Verify OTP
             </a>
           </form>
-        </div>
       </div>
-    </body>
+    </>
   );
 }
 
