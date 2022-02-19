@@ -363,6 +363,8 @@ app.post("/login-otp", async (req, res) => {
   }
 });
 
-app.listen(process.env.PORT || 3000, () => {
-  console.log(`PORT ${process.env.PORT} is running ......`);
+var port= process.env.PORT || 3001; 
+
+app.listen(port, () => {
+  console.log(`PORT ${port} is running ......`);
 });

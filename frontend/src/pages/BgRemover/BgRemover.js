@@ -2,12 +2,16 @@
 import Navbar from "../../components/Navbar/Navbar";
 import style from "./BgRemover.module.scss";
 import photo from "./girl.svg";
+import photo2 from "./default1.png"
 import axios from 'axios';
 // eslint-disable-next-line no-unused-vars
 import React,{Component} from 'react';
 import { useState } from "react";
 
-var url = "https://cdn.britannica.com/09/157809-050-073D23F3/Indian-bustard-bird-species.jpg"
+
+
+// var url = "https://cdn.britannica.com/09/157809-050-073D23F3/Indian-bustard-bird-species.jpg"
+var url=photo2;
 
 const BgRemover = () => {
 
@@ -34,13 +38,13 @@ const BgRemover = () => {
     const handleSubmit = async (event) =>{
       event.preventDefault();
       
-      axios.post("http://localhost:3001/bg-remover",{ image : image },{})
+      axios.post(`http://localhost:3001/bg-remover`,{ image : image },{})
     .then(res=>{
       setReady(true);
       setImage("data:image/png;base64,"+res.data)
     })
     .catch(err=>{
-      alert("error in signup: ",err );
+      alert("Error in uploading Image",err );
     });
     }
 
